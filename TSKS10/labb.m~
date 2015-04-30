@@ -1,0 +1,13 @@
+%Bestäm fc
+
+%% Plotta i tidsdomän
+n_samples_time = 7800000;
+[y,Fs] = audioread('signal-herlu184.wav');
+x = 0:1/Fs:(n_samples_time-1)*1/Fs;
+Fs
+
+plot(x,y)
+%% Plotta i frekvensdomän
+X = abs(fft(y));
+
+plot(X)

@@ -1,0 +1,61 @@
+Saved under name: l3.
+
+Problem saved Fri Dec 05 10:52:33 CET 2014 with 7 nodes and 6 links.
+
+Problem saved Fri Dec 05 10:52:33 CET 2014 with 7 nodes and 6 links.
+
+Problem saved Fri Dec 05 10:58:56 CET 2014 with 8 nodes and 6 links.
+
+Problem saved Fri Dec 05 10:58:56 CET 2014 with 8 nodes and 6 links.
+
+Problem saved Fri Dec 05 11:03:34 CET 2014 with 8 nodes and 11 links.
+
+Problem saved Fri Dec 05 11:03:34 CET 2014 with 8 nodes and 11 links.
+Saved under name: l3a.
+
+Problem saved Fri Dec 05 11:13:45 CET 2014 with 13 nodes and 11 links.
+
+Problem saved Fri Dec 05 11:13:45 CET 2014 with 13 nodes and 11 links.
+
+Problem saved Fri Dec 05 11:18:20 CET 2014 with 13 nodes and 20 links.
+
+Problem saved Fri Dec 05 11:18:20 CET 2014 with 13 nodes and 20 links.
+
+
+Problem saved Fri Dec 05 11:34:47 CET 2014 with 15 nodes and 13 links.
+
+Problem saved Fri Dec 05 11:34:47 CET 2014 with 15 nodes and 13 links.
+
+Problem saved Fri Dec 05 11:36:59 CET 2014 with 15 nodes and 13 links.
+
+Problem saved Fri Dec 05 11:36:59 CET 2014 with 15 nodes and 13 links.
+
+Problem saved Fri Dec 05 11:39:22 CET 2014 with 15 nodes and 18 links.
+
+Problem saved Fri Dec 05 11:39:22 CET 2014 with 15 nodes and 18 links.
+
+Problem saved Fri Dec 05 11:43:40 CET 2014 with 15 nodes and 18 links.
+
+Problem saved Fri Dec 05 11:43:40 CET 2014 with 15 nodes and 18 links.
+
+
+Problem saved Fri Dec 05 12:43:37 CET 2014 with 20 nodes and 35 links.
+
+Problem saved Fri Dec 05 12:43:37 CET 2014 with 20 nodes and 35 links.
+
+Saved under name: l3a1.
+
+Problem saved Fri Dec 05 12:49:39 CET 2014 with 20 nodes and 35 links.
+
+Problem saved Fri Dec 05 12:49:39 CET 2014 with 20 nodes and 35 links.
+Saved under name: l3a1.
+
+Problem saved Fri Dec 05 13:11:32 CET 2014 with 20 nodes and 35 links.
+
+Problem saved Fri Dec 05 13:11:32 CET 2014 with 20 nodes and 35 links.
+
+
+Problem saved Fri Dec 05 15:11:07 CET 2014 with 20 nodes and 35 links.
+
+Problem saved Fri Dec 05 15:11:07 CET 2014 with 20 nodes and 35 links.
+

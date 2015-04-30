@@ -1,0 +1,82 @@
+\documentclass[10pt,twocolumn]{article}
+
+\usepackage{times}
+\usepackage{mathptmx}
+\usepackage{amsmath}
+\usepackage{spverbatim}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[swedish]{babel}
+
+\raggedbottom
+\sloppy
+
+\title{Laborationsrapport i TSKS10 \emph{Signaler, Information och Kommunikation}}
+
+\author{Herman Lundkvist \\ herlu184, 930911-2770 }
+
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\section{Inledning}
+
+Denna rapport beskriver en lösningsgång för en laborationsuppgift som gavs i
+kursen \emph{TSKS10} vårterminen 2015 på Tekniska högskolan vid Linköpings
+universitet.
+
+Uppgiften gick ut på extrahera en specifik I/Q-modulerad signal från en en
+kanal som innehöll flera I/Q-modulerade signaler.
+
+%x här
+
+Den eftersökta signalen hade några kända egenskaper. Dels hade signalen en
+bärfrekvens fc, som var en multipel av 19 Khz. Dels bestod Xi respektive
+Xq-signalerna av tre olika delar som vardera innehöll: en melodi, ett ordspråk
+och vitt brus. Melodierna och ordpråket skiljde sig i
+innehåll och längd mellan Xi och Xq.
+
+Signalen som mottogs från kanalen, y, såg pågrund av ekoeffekter ut på
+följande vis:
+
+För att kunna utföra beräkningar med hjälp av dator, användes en samplad
+variant av y, y-hatt. Y-hatt erhölls genom att först filtrera y med ett idealt
+lågpassfilter och sedan sampla resultatet med frekvensen 400 kHz.
+
+De uppgifter som skulle lösas var:
+\begin{enumerate}
+\item att bestämma fc;
+\item att bestämma tidsfördröjningen t1-t2, under förutsättningen att
+t2 > t1;
+\item att identifiera ordpråket.
+\end{enumerate}
+
+\section{Metod}
+
+Uppgiften l\"ostes p\aa\ f\"oljande s\"att...
+
+\section{Resultat}
+
+Den sökta informationen \"ar:
+\begin{itemize}
+\item B\"arfrekvensen f\"or nyttosignalen \"ar $f_c=...$
+\item ...
+\end{itemize}
+
+\clearpage
+
+\section*{Min Matlab-kod:}
+\begin{spverbatim}
+clear all
+close all
+
+for k=1:...
+  ...
+end
+
+plot(...,...)
+\end{spverbatim}
+
+\end{document}
