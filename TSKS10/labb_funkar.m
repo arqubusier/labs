@@ -1,8 +1,31 @@
-%%Init
+%%Initialize
 N = 7.8*10^6;
-%% ladda fil
 [y,Fs] = wavread('signal-herlu184.wav');
+%% 
+% Determine the tau2-tau1 by studying the correlation of y
+% with itself. The Peak values are derived from the plot in this section
+% 
+y_c = xcorr(y, y);
+plot(y_c);
 
+lpeak = 7.644*10^6;
+mpeak = 7.800*10^6;
+rpeak = 7.956*10^6;
+
+%tau2 - tau1 in # of samples
+tau_diff_samples = rpeak-mpeak;
+tau_diff = tau_diff_samples*1/Fs;
+%%
+% Filter out echo in the time domain.
+% x is the signal with the echo removed
+%
+x = y;
+for i = tau_diff_samples+1:length(x)
+    x(i) = x(i) - 0.9*x(i-tau_diff_samples);
+end
+x_c1 = xcorr(x, x);
+
+plot(x_c1)
 %% Plotta i tidsdomän
 x_time = 0:1/Fs:(N-1)*1/Fs;
 %%
@@ -34,23 +57,6 @@ pause;
 plot(x_target)
 %% fc
 fc = 152*10^3;
-
-%% Undersök tidsfördröjning genom att korrelera y
-y_c = xcorr(y, y);
-plot(y_c);
-%%
-%peaks = findpeaks(x_c, 'minPeakHeight', 500)
-lpeak = 7.644*10^6;
-mpeak = 7.800*10^6;
-rpeak = 7.956*10^6;
-tau_diff_samples = rpeak-mpeak; %tau2 - tau1 in # of samples
-%% Filtrera ut eko, x är signal utan eko
-x = y;
-for i = tau_diff_samples+1:length(x)
-    x(i) = x(i) - 0.9*x(i-tau_diff_samples);
-end
-x_c1 = xcorr(x, x);
-plot(x_c1)
 %% filtrera ut signal kring fc
 X = fft(x);
 plot(X_freq, abs(X(1:end/2)));
