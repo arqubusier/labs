@@ -27,8 +27,8 @@ Denna rapport beskriver en lösningsgång för en laborationsuppgift som gavs i
 kursen \emph{TSKS10} vårterminen 2015 på Tekniska högskolan vid Linköpings
 universitet.
 
-Uppgiften gick ut på extrahera en specifik I/Q-modulerad signal från en sänd
-signal, $x(t)$, som innehöll flera I/Q-modulerade signaler. $x(t)$ ges av:
+Uppgiften gick ut på extrahera en specifik I/Q-modulerad signal från en signal som sändes
+över en kanal och som innehöll flera I/Q-modulerade signaler. Den sända signalen, $x(t)$, gas av:
 \begin{equation}
 x(t) = x_i(t) cos(2 \pi f_ct) - x_q(t) sin(2 \pi f_c t) + z(t)
 \label{e1}
@@ -37,11 +37,11 @@ där $z(t)$ betecknar summan av de ointressanta signalerna.
 
 Den eftersökta signalen hade några kända egenskaper. Dels hade signalen en
 bärfrekvens $f_c$, som var en multipel av 19 Khz. Dels bestod $x_i$ respektive
-$x_q$-signalerna av tre olika delar som vardera innehöll: en melodi, ett ordspråk
+$x_q$-signalerna av tre olika delar som för vardera signal innehöll: en melodi, ett ordspråk
 och vitt brus. Melodierna och ordpråket skiljde sig i
 innehåll och längd mellan $x_i$ och $x_q$.
 
-Signalen som mottogs från kanalen, $y$, såg pågrund av ekoeffekter ut på
+Signalen som mottogs från kanalen, $y$, såg på grund av ekoeffekter ut på
 följande vis:
 \begin{equation}
     y(t)=x(t - \tau_1) + 0,9 x(t - \tau_2)
@@ -51,7 +51,7 @@ där $\tau_1$ och $\tau_2$ är två tidskonstanter.
 För att kunna utföra beräkningar med hjälp av dator, användes en samplad
 variant av $y$. Den samplade signalen, $\hat{y}$, erhölls genom att först
 filtrera y med ett idealt lågpassfilter och sedan sampla resultatet med
-frekvensen 400 kHz.
+frekvensen 400 kHz. Den slutgiltliga signalen sparades sedan i wav format.
 
 De uppgifter som skulle lösas var:
 \begin{enumerate}
@@ -63,7 +63,7 @@ $\tau_2 > \tau_1$;
 
 \section{Metod}
 
-Uppgiften l\"ostes p\aa\ f\"oljande s\"att...
+
 
 \section{Resultat}
 
