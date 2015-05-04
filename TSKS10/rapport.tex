@@ -5,11 +5,11 @@
 \usepackage{amsmath}
 \usepackage{spverbatim}
 \usepackage[T1]{fontenc}
+\usepackage{lmodern}
 \usepackage[utf8]{inputenc}
 \usepackage[swedish]{babel}
-
+\DeclareUnicodeCharacter{00A0}{ }
 \raggedbottom
-\sloppy
 
 \title{Laborationsrapport i TSKS10 \emph{Signaler, Information och Kommunikation}}
 
@@ -27,7 +27,7 @@ Denna rapport beskriver en lösningsgång för en laborationsuppgift som gavs i
 kursen \emph{TSKS10} vårterminen 2015 på Tekniska högskolan vid Linköpings
 universitet.
 
-Uppgiften gick ut på extrahera en specifik I/Q-modulerad signal från en signal som sändes
+Uppgiften gick ut på att extrahera en specifik I/Q-modulerad signal från en signal som sändes
 över en kanal och som innehöll flera I/Q-modulerade signaler. Den sända signalen, $x(t)$, gas av:
 \begin{equation}
 x(t) = x_i(t) cos(2 \pi f_ct) - x_q(t) sin(2 \pi f_c t) + z(t)
@@ -62,16 +62,33 @@ $\tau_2 > \tau_1$;
 \end{enumerate}
 
 \section{Metod}
+För att lösa uppgiterna, användes ett Matlab-skript som laddade in wav-filen,
+och utförde ett antal beräkningar.
 
+Det första som gjordes var att bestämma $\tau_1$ - $\tau_2$, för att därmed
+kunna filtrera bort ekot från $y(t)$. Detta gjordes genom att studera korrelationen
+av den mottagna signalen med sig själv:
+\begin{multline}
+    z(\tau) = \int_{-\infty}^{\infty}\!y(t)y(t+\tau)\, \mathrm{d}t \\  
+    = \int_{-\infty}^{\infty}\!(x(t-\tau_1)+0,9 x(t-\tau_2))(x(t-\tau_1+\tau)+0,9 x(t-\tau_2+\tau))\, \mathrm{d}t \\
+    \ldots \\
+    = 1,86\left\{x(t) \ast x(-t)\right\}(\tau) + 
+    0,9\left\{x(-t) \ast x(t+\tau_1-\tau_2))\right\}(\tau)\\ + 
+    0,9\left\{x(-t) \ast x(t+\tau_2-\tau_1))\right\}(\tau)
+    \label{e3}
+\end{multline}
+Från \ref{e3} kan man dra slutsatsen att $z(\tau)$ innehåller tre kraftiga pikar: en stor pik mitt emellan två mindre
+pikar på avstånden $\pm(\tau_2 - \tau_1)$ från den större. Dessa pikar uppstår de båda komponeterna i respekive faltning
+överlappar som mest.
+
+Korrelationen plottades, och utifrån denna beräknades $\tau_2 - \tau_1$ genom att först beräkna antalet sampel mellan
+den mittre och den högra av ovannämnda pikar. Detta räknades sedan om till en tidsdifferens genom att multiplicera resultatet
+sampeltiden.
 
 
 \section{Resultat}
 
-Den sökta informationen \"ar:
-\begin{itemize}
-\item B\"arfrekvensen f\"or nyttosignalen \"ar $f_c=...$
-\item ...
-\end{itemize}
+Tidsdifferensen $\tau_2 - \tau_1$ blev 0.39 s.
 
 \clearpage
 
