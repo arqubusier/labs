@@ -1,6 +1,8 @@
 %%Initialize
 N = 7.8*10^6;
 [y,Fs] = wavread('signal-herlu184.wav');
+f = Fs*linspace(0,1/2,N/2);
+t = 0:1/Fs:(N-1)*1/Fs;
 %% 
 % Determine the tau2-tau1 by studying the correlation of y
 % with itself. The Peak values are derived from the plot in this section
@@ -13,62 +15,49 @@ mpeak = 7.800*10^6;
 rpeak = 7.956*10^6;
 
 %tau2 - tau1 in # of samples
-tau_diff_samples = rpeak-mpeak;
-tau_diff = tau_diff_samples*1/Fs;
+n_delta = rpeak-mpeak;
+tau_diff = n_delta*1/Fs;
 %%
 % Filter out echo in the time domain.
 % x is the signal with the echo removed
 %
 x = y;
-for i = tau_diff_samples+1:length(x)
-    x(i) = x(i) - 0.9*x(i-tau_diff_samples);
+for i = n_delta+1:length(x)
+    x(i) = x(i) - 0.9*x(i-n_delta);
 end
+
 x_c1 = xcorr(x, x);
-
+%The correlation shows that the left and right peaks have been
+%removed
 plot(x_c1)
-%% Plotta i tidsdomän
-x_time = 0:1/Fs:(N-1)*1/Fs;
 %%
-plot(x_time,y)
-%38, 95, 152 kHz
-
-%% Plotta i frekvensdomän
-%X_time = -Fs/2:Fs/N:Fs/2-Fs/N;
-%bara intresserad av halva spektrat
-X_freq = Fs*linspace(0,1/2,N/2);
-%%
-Y = fft(y);
-plot(X_freq, abs(Y(1:end/2)))
-
-%% Bestäm fc genom att undersöka de 3 olika frekvensområdena
-%Bandpass-filtrera relevant spektra
-ze = zeros(1, N/2);
-Y_target1 = ze;
-Y_target2 = ze;
-Y_target3 = ze;
-Y_target1(0.2/2*N/2:0.6/2*N/2) = Y(0.2/2*N/2:0.6/2*N/2);
-Y_target2(0.7/2*N/2:1.1/2*N/2) = Y(0.7/2*N/2:1.1/2*N/2);
-Y_target3(1.3/2*N/2:1.7/2*N/2) = Y(1.3/2*N/2:1.7/2*N/2);
-Y_target = Y_target3;
-Y_target = ifft(Y_target(1.3/2*N/2:1.7/2*N/2),'symmetric');
-
-plot(X_freq, abs(Y_target))
-pause;
-plot(x_target)
-%% fc
-fc = 152*10^3;
-%% filtrera ut signal kring fc
+% Determine fc
 X = fft(x);
-plot(X_freq, abs(X(1:end/2)));
-X_target = zeros(1, N);
-X_target(1.3/2*N/2:1.7/2*N/2) = X(1.3/2*N/2:1.7/2*N/2);
+%The plot shows three distinct bands at frequencies with multiples of
+%19 kHz
+plot(f, abs(X(1:end/2)))
+
+%Filtering out each band and inverse transforming it shows that the
+%heighest band matches the signal description (three distinctive parts,
+%the last one being white noise)
+ze = zeros(1, N/2);
+X_target1 = ze;
+X_target2 = ze;
+X_target3 = ze;
+X_target1(0.2/2*N/2:0.6/2*N/2) = X(0.2/2*N/2:0.6/2*N/2);
+X_target2(0.7/2*N/2:1.1/2*N/2) = X(0.7/2*N/2:1.1/2*N/2);
+X_target3(1.3/2*N/2:1.7/2*N/2) = X(1.3/2*N/2:1.7/2*N/2);
+X_target = X_target3;
 x_target = ifft(X_target, 'symmetric');
-%plot(X_freq, abs(X_target(1:end/2));
-plot(x_time, x_target);
+
+plot(x_target)
+
+%fc i determined by looking at the centrum of the heighest band of X
+fc = 152*10^3;
 %% Demodulera
 phase_shift = 0.8;
-xi_mixer = cos(2*pi*fc*x_time+phase_shift);
-xq_mixer = sin(2*pi*fc*x_time+phase_shift);
+xi_mixer = cos(2*pi*fc*t+phase_shift);
+xq_mixer = sin(2*pi*fc*t+phase_shift);
 xi_ = 2*xi_mixer.*x_target;
 xq_ = -2*xq_mixer.*x_target;
 Xi_ = fft( xi_ );
@@ -81,11 +70,11 @@ Xq(1:0.4/2*N/2) = Xq_(1:0.4/2*N/2);
 xi = ifft(Xi, 'symmetric');
 xq = ifft(Xq, 'symmetric');
 
-plot(X_freq, abs(Xq(1:end/2)));
+plot(f, abs(Xq(1:end/2)));
 
-plot(x_time, xi)
+plot(t, xi)
 figure
-plot(x_time, xq)
+plot(t, xq)
 Fs_ = Fs/10
 
 %wavwrite(xi, 'xi');
@@ -94,5 +83,5 @@ pause
 soundsc(xq(1:20:end), Fs/20)  
 %wavwrite(xq, 'xq');
 
-%Xi inget ont som inte ha något gott med sig
+%Xi inget ont som inte har något gott med sig
 %Xq väck inte den björn som sover
