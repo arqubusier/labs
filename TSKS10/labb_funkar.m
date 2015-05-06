@@ -40,7 +40,7 @@ plot(f, abs(X(1:end/2)))
 %Filtering out each band and inverse transforming it shows that the
 %heighest band matches the signal description (three distinctive parts,
 %the last one being white noise)
-ze = zeros(1, N/2);
+ze = zeros(1, N);
 X_target1 = ze;
 X_target2 = ze;
 X_target3 = ze;
@@ -54,7 +54,13 @@ plot(x_target)
 
 %fc i determined by looking at the centrum of the heighest band of X
 fc = 152*10^3;
-%% Demodulera
+%% 
+% Demodulate
+%
+% The delay of x(t) results in a phase shift in the xi, and xq components.
+% This value lies somewhere between zero and pi/2. The phase shift below
+% was derived by testing different values until the message could be heard.
+%
 phase_shift = 0.8;
 xi_mixer = cos(2*pi*fc*t+phase_shift);
 xq_mixer = sin(2*pi*fc*t+phase_shift);
@@ -62,6 +68,7 @@ xi_ = 2*xi_mixer.*x_target;
 xq_ = -2*xq_mixer.*x_target;
 Xi_ = fft( xi_ );
 Xq_ = fft( xq_ );
+
 %lowpass filter
 Xi = zeros(1,N);
 Xq = zeros(1,N);
@@ -72,16 +79,11 @@ xq = ifft(Xq, 'symmetric');
 
 plot(f, abs(Xq(1:end/2)));
 
-plot(t, xi)
-figure
-plot(t, xq)
 Fs_ = Fs/10
 
-%wavwrite(xi, 'xi');
 soundsc(xi(1:20:end), Fs/20)
 pause
 soundsc(xq(1:20:end), Fs/20)  
-%wavwrite(xq, 'xq');
 
 %Xi inget ont som inte har något gott med sig
 %Xq väck inte den björn som sover
