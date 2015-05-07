@@ -4,11 +4,20 @@ N = 7.8*10^6;
 f = Fs*linspace(0,1/2,N/2);
 t = 0:1/Fs:(N-1)*1/Fs;
 %% 
-% Determine the tau2-tau1 by studying the correlation of y
-% with itself. The Peak values are derived from the plot in this section
+% Determine the tau2-tau1 by studying the
+% correlation of y with itself. The Peak 
+% values are derived from the plot in
+% this section
 % 
 y_c = xcorr(y, y);
 plot(y_c);
+
+axis([7*10^6 8.6*10^6 -1500 2000])
+title('\bf{figur 1: korrelationen} $\mathbf{z[n]}$', 'Interpreter', 'Latex')
+xlabel('\bf{n:te sampel}', 'Interpreter', 'Latex');
+ylabel('$\mathbf{z[n]}$', 'Interpreter', 'Latex');
+print('fig1','-dpng');
+
 
 lpeak = 7.644*10^6;
 mpeak = 7.800*10^6;
@@ -27,18 +36,21 @@ for i = n_delta+1:length(x)
 end
 
 x_c1 = xcorr(x, x);
-%The correlation shows that the left and right peaks have been
-%removed
+%The correlation shows that the left and
+%right peaks have been removed
 plot(x_c1)
 %%
 % Determine fc
 X = fft(x);
-%The plot shows three distinct bands at frequencies with multiples of
+%The plot shows three distinct bands at
+%frequencies with multiples of
 %19 kHz
 plot(f, abs(X(1:end/2)))
 
-%Filtering out each band and inverse transforming it shows that the
-%heighest band matches the signal description (three distinctive parts,
+%Filtering out each band and inverse
+%transforming it shows that the
+%heighest band matches the signal
+%description (three distinctive parts,
 %the last one being white noise)
 ze = zeros(1, N);
 X_target1 = ze;
@@ -51,15 +63,23 @@ X_target = X_target3;
 x_target = ifft(X_target, 'symmetric');
 
 plot(x_target)
+title('\bf{figur 2: den s\"{o}kta signalen} $\mathbf{x_t[n]}$', 'Interpreter', 'Latex') 
+ylabel('$\mathbf{x_t[n]}$', 'Interpreter', 'Latex');
+xlabel('\bf{n:te sampel}', 'Interpreter', 'Latex');
+print('fig2','-dpng');
 
-%fc i determined by looking at the centrum of the heighest band of X
+%fc i determined by looking at the
+%centrum of the heighest band of X
 fc = 152*10^3;
 %% 
 % Demodulate
 %
-% The delay of x(t) results in a phase shift in the xi, and xq components.
-% This value lies somewhere between zero and pi/2. The phase shift below
-% was derived by testing different values until the message could be heard.
+% The delay of x(t) results in a phase
+% shift in the xi, and xq components.
+% This value lies somewhere between zero
+% and pi/2. The phase shift below was
+% derived by testing different values
+% until the message could be heard.
 %
 phase_shift = 0.8;
 xi_mixer = cos(2*pi*fc*t+phase_shift);
@@ -83,7 +103,9 @@ Fs_ = Fs/10
 
 soundsc(xi(1:20:end), Fs/20)
 pause
-soundsc(xq(1:20:end), Fs/20)  
+soundsc(xq(1:20:end), Fs/20)
 
-%Xi inget ont som inte har något gott med sig
-%Xq väck inte den björn som sover
+%Xi: "Inget ont som inte har något gott
+%med sig."
+
+%Xq: "Väck inte den björn som sover."
