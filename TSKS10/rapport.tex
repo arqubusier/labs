@@ -10,6 +10,7 @@
 \usepackage[utf8]{inputenc}
 \usepackage[swedish]{babel}
 \DeclareUnicodeCharacter{00A0}{ }
+\sloppy
 \raggedbottom
 
 \title{Laborationsrapport i TSKS10 \emph{Signaler, Information och Kommunikation}}
@@ -74,12 +75,15 @@ av den mottagna signalen med sig själv:
 \begin{multline}
     z(\tau) = \int_{-\infty}^{\infty}\!y(t)y(t+\tau)\, \mathrm{d}t \\  
     = \int_{-\infty}^{\infty}\!(x(t-\tau_1)+0,9 x(t-\tau_2))(x(t-\tau_1+\tau)+0,9 x(t-\tau_2+\tau))\, \mathrm{d}t \\
-    \ldots \\
+    \vdots \\
     = 1,86\left\{x(t) \ast x(-t)\right\}(\tau) + 
     0,9\left\{x(-t) \ast x(t+\tau_1-\tau_2))\right\}(\tau)\\ + 
     0,9\left\{x(-t) \ast x(t+\tau_2-\tau_1))\right\}(\tau)
     \label{e3}
 \end{multline}
+Här utnyttjades att integralen hade $\pm\infty$ som integrationsgränser, vilket gjorde att integralens värde ej
+påverkades om integranden tidsförskjöts med $\tau_1$.
+
 Från \ref{e3} kan man dra slutsatsen att $z(\tau)$ innehåller tre kraftiga pikar: en stor pik mitt emellan två mindre
 pikar på avstånden $\pm(\tau_2 - \tau_1)$ från den större. Dessa pikar uppstår de båda komponeterna i respekive faltning
 överlappar som mest. Ett liknade resonemang kan göras för den diskreta $\hat{y}[n]$.
@@ -111,15 +115,32 @@ frekvensbandet hos detta område noterades, och antogs vara $f_c$.
 
 \subsection{Identifiering av ordspråken}
 
+För att identifiera ordspråket genomfördes en I/Q-demodulering av $x[n]$, enligt:
+\begin{multline}
+    x_i[n] = \mathcal{H}_{B/2}^{LP} \{ 2 x[n] cos[2 \pi f_c n] \} \\
+    x_q[n] = \mathcal{H}_{B/2}^{LP} \{ -2 x[n] sin[2 \pi f_c n] \}
+    \label{e5}
+\end{multline}
+Det uppstod dock ett problem i och med att $x[n]$ innehöll en tidsförskjutning $n_{\tau_1}$,
+vilket medförde att de komponenter man fick ut från \ref{e5} innehöll
+linjärkombinationer av $x_i[n]$ och $x_q[n]$. Detta kan inses genom att sätta $n := n - n_{\tau_1}$
+i \ref{e5} och använda subtraktionsatsen för sinus och cosinus.
 
+Eftersom att det inte fanns något enkelt sätt att bestämma $n_{\tau_1}$, togs denna fram genom
+att experimentera med olika värden mellan $0$ och $2*\pi$. Efter att några värden provats
+kunde man dra slutsatsen att en av melodierna var kortare en den andra och följdes av några
+sekunders tystnad. Värdet på $n_{\tau_1}$ finjusterades därför tills överhörningen från den
+andra signalen var minimal under denna period av tystnad.
 
+Sist av allt nedsamplades $x_i$ respektive $x_q$ med en faktor 10 och spelades upp varpå
+ordspråken kunde höras.
 \section{Resultat}
 
-Laboratione gav följande resultat:
+Laborationen gav följande resultat:
 \begin{enumerate}
 \item Bärfrekvensen $f_c$ blev 152 Khz. 
 \item Tidsdifferensen $\tau_2 - \tau_1$ blev 0.39 s.
-\item Ordspråken löd dels "inget ont som inte har något gott med sig", dels "väck inte den björn som sover.
+\item Ordspråken löd dels "inget ont som inte har något gott med sig", dels "väck inte den björn som sover".
 \end{enumerate}
 
 \clearpage
