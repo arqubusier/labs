@@ -10,6 +10,7 @@
 \usepackage{lmodern}
 \usepackage[utf8]{inputenc}
 \usepackage[swedish]{babel}
+\usepackage{xspace}
 \DeclareUnicodeCharacter{00A0}{ }
 \sloppy
 \raggedbottom
@@ -22,7 +23,7 @@
 
 \begin{document}
 
-\newcommand{\yhat}{$\hat{y}[n]$}
+\newcommand{\yhat}{$\hat{y}[n]$\xspace}
 
 \maketitle
 
@@ -35,15 +36,15 @@ universitet.
 Uppgiften gick ut på att extrahera en specifik I/Q-modulerad signal från en signal som sändes
 över en kanal och som innehöll flera I/Q-modulerade signaler. Den sända signalen, $x(t)$, gas av:
 \begin{equation}
-x(t) = x_i(t) cos(2 \pi f_ct) - x_q(t) sin(2 \pi f_c t) + z(t)
+x(t) = x_i(t) \cos(2 \pi f_ct) - x_q(t) \sin(2 \pi f_c t) + z(t)
 \label{e1}
 \end{equation}
 där $z(t)$ betecknar summan av de ointressanta signalerna.
 
 Den eftersökta signalen hade några kända egenskaper. Dels hade signalen en
-bärfrekvens $f_c$, som var en multipel av 19 Khz. Dels bestod $x_i$ respektive
+bärfrekvens $f_c$, som var en multipel av 19 Khz. Dels bestod $x_i$- respektive
 $x_q$-signalerna av tre olika delar som för vardera signal innehöll: en melodi, ett ordspråk
-och vitt brus. Melodierna och ordpråket skiljde sig i
+och vitt brus. Melodierna och ordpråket skiljde sig åt i
 innehåll och längd mellan $x_i$ och $x_q$.
 
 Signalen som mottogs från kanalen, $y$, såg på grund av ekoeffekter ut på
@@ -87,12 +88,12 @@ av den mottagna signalen med sig själv:
 Här utnyttjades att integralen hade $\pm\infty$ som integrationsgränser, vilket gjorde att integralens värde ej
 påverkades om integranden tidsförskjöts med $\tau_1$.
 
-Från \ref{e3} kan man dra slutsatsen att $r(\tau)$ innehåller tre kraftiga pikar: en stor pik mitt emellan två mindre
+Från (\ref{e3}) kan man dra slutsatsen att $r(\tau)$ innehåller tre kraftiga pikar: en stor pik mitt emellan två mindre
 pikar på avstånden $\pm(\tau_2 - \tau_1)$ från den större. Dessa pikar uppstår de båda komponeterna i respekive faltning
 överlappar som mest. Ett liknade resonemang kan göras för den diskreta \yhat.
 
 \begin{figure}
-    \includegraphics[width=\linewidth]{fig1}
+    \includegraphics[trim = 0 50mm 0 80mm, clip, width=\linewidth]{fig1.pdf}
     \caption{
         Korrelationen $r[n]$ 
         \label{fig:z}
@@ -111,22 +112,22 @@ x[n_i] \coloneqq x[n_i] - 0,9x[n_i - n_\Delta]
 \end{equation}
 där $x[n] \coloneqq \hat{y}[n]$ från början.
 
-Operationen \ref{e4} fungerar, eftersom att (om man bortser från noll-värden i början av signalen som ej påverkar resultatet), ekot börjar $n_\Delta$
-sampel efter själva signalen; det finns alltså ett fönster av $n_\Delta$ sample i början av signalen som saknar eko. Genom att
-värden från detta fönster subtraheras från värden $n_\Delta$ samples senare, kancelleras ekot. Eftersom att man tilldelar $x$ det eko-fria
+Operationen (\ref{e4}) fungerar, eftersom att (om man bortser från noll-värden i början av signalen som ej påverkar resultatet) ekot börjar $n_\Delta$
+sampel efter själva signalen; det finns alltså ett fönster av $n_\Delta$ sampel i början av signalen som saknar eko. Genom att
+värden från detta fönster subtraheras från värden $n_\Delta$ samples senare, kancelleras ekot. Eftersom att man tilldelar $x$ det ekofria
 värdet samtidigt som det används i uträkningen, flyttar man detta fönster framför sig tills man nått slutet av signalen.
 
 \subsection{Bestämning av $f_c$}
 
 \begin{figure}[h]
-    \includegraphics[width=\linewidth]{fig2}
+    \includegraphics[trim = 0 50mm 0 80mm, clip, width=\linewidth]{fig2.pdf}
     \caption{
         den sökta signalen $x_t[n]$ 
         \label{fig:xt}
     }
 \end{figure}
 
-Genom att plotta $Y[F]$, den diskreta fouriertransformen av $y[t]$, kunde tre tydliga frekvensband med
+Genom att plotta $Y[F]$, den diskreta fouriertransformen av \yhat, kunde tre tydliga frekvensband med
 centra kring sampelnummer, som motsvarade multiplar av 19 Khz, observeras.
 Dessa undersöktes var för sig i tidsdomänen, för att hitta nyttosignalen $x_t[n]$ (dvs $x[n] - z[n]$).
 Undersökningen bestod i att bandpassfiltrera relevant band och inverstransformera. Ett av
@@ -142,10 +143,13 @@ För att identifiera ordspråket genomfördes en I/Q-demodulering av $x[n]$, enl
     x_q[n] = \mathcal{H}_{B/2}^{LP} \{ -2 x[n] \sin[2 \pi f_c n] \}
     \label{e5}
 \end{multline}
+där $B$ valdes till ett värde som var tillräckligt stort för att rymma en majoritet
+av signalenergin.
+
 Det uppstod dock ett problem i och med att $x[n]$ innehöll en tidsförskjutning $n_{\tau_1}$,
-vilket medförde att de komponenter man fick ut från \ref{e5} innehöll
+vilket medförde att de komponenter man fick ut från (\ref{e5}) innehöll
 linjärkombinationer av $x_i[n]$ och $x_q[n]$. Detta kan inses genom att sätta $n := n - n_{\tau_1}$
-i \ref{e5} och använda subtraktionsatsen för sinus och cosinus.
+i (\ref{e5}) och använda subtraktionsatsen för sinus och cosinus.
 
 Eftersom att det inte fanns något enkelt sätt att bestämma $n_{\tau_1}$, togs denna fram genom
 att experimentera med olika värden mellan $0$ och $2 \pi$. Efter att några värden provats
@@ -159,8 +163,8 @@ ordspråken kunde höras.
 
 Laborationen gav följande resultat:
 \begin{enumerate}
-\item Bärfrekvensen $f_c$ blev 152 KHz. 
-\item Tidsdifferensen $\tau_2 - \tau_1$ blev 0.39 s.
+\item Bärfrekvensen $f_c$ var 152 KHz. 
+\item Tidsdifferensen $\tau_2 - \tau_1$ var 0.39 s.
 \item Ordspråken löd dels "inget ont som inte har något gott med sig", dels "väck inte den björn som sover".
 \end{enumerate}
 
