@@ -5,6 +5,7 @@
 \usepackage{amsmath}
 \usepackage{mathtools}
 \usepackage{spverbatim}
+\usepackage{graphicx}
 \usepackage[T1]{fontenc}
 \usepackage{lmodern}
 \usepackage[utf8]{inputenc}
@@ -88,7 +89,15 @@ Från \ref{e3} kan man dra slutsatsen att $z(\tau)$ innehåller tre kraftiga pik
 pikar på avstånden $\pm(\tau_2 - \tau_1)$ från den större. Dessa pikar uppstår de båda komponeterna i respekive faltning
 överlappar som mest. Ett liknade resonemang kan göras för den diskreta $\hat{y}[n]$.
 
-Korrelationen av $\hat{y}[n]$ plottades, och utifrån denna beräknades $\tau_2 - \tau_1$ genom att först beräkna $n_\Delta$, antalet sampel mellan
+\begin{figure}
+    \includegraphics[width=\linewidth]{fig1}
+    \caption{
+        Korrelationen $z[n]$ 
+        \label{fig:z}
+    }
+\end{figure}
+
+Korrelationen av $\hat{y}[n]$ plottades, se figur \ref{fig:z}, och utifrån denna beräknades $\tau_2 - \tau_1$ genom att först beräkna $n_\Delta$, antalet sampel mellan
 den mittre och den högra av ovannämnda pikar. Detta räknades sedan om till en tidsdifferens genom att multiplicera resultatet
 sampeltiden.
 
@@ -106,11 +115,20 @@ värden från detta fönster subtraheras från värden $n_\Delta$ samples senare
 värdet samtidigt som det används i uträkningen, flyttar man detta fönster framför sig tills man nått slutet av signalen.
 
 \subsection{Bestämning av $f_c$}
+
+\begin{figure}[h]
+    \includegraphics[width=\linewidth]{fig2}
+    \caption{
+        den sökta signalen $x_t[n]$ 
+        \label{fig:xt}
+    }
+\end{figure}
+
 Genom att plotta $Y[F]$, den diskreta fouriertransformen av $y[t]$, kunde tre tydliga frekvensband med
 centra kring sampelnummer, som motsvarade multiplar av 19 Khz, observeras.
-Dessa undersöktes var för sig i tidsdomänen genom bandpass-filtrering och invers-transformering. Ett av
+Dessa undersöktes var för sig i tidsdomänen genom bandpassfiltrering och inverstransformering. Ett av
 dessa band hade ett utseende i tidsdomänen, som stämde väl överens med det som gavs i uppgiften; den
-hade tre distinkta områden, där det sista området påminnde om vitt brus. Frekvensvärdet i centrum för
+hade tre distinkta områden, där det sista området påminnde om vitt brus, se figur \ref{fig:xt}. Frekvensvärdet i centrum för
 frekvensbandet hos detta område noterades, och antogs vara $f_c$.
 
 \subsection{Identifiering av ordspråken}
