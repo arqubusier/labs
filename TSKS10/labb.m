@@ -13,10 +13,10 @@ y_c = xcorr(y, y);
 plot(y_c);
 
 axis([7*10^6 8.6*10^6 -1500 2000])
-title('\bf{figur 1: korrelationen} $\mathbf{z[n]}$', 'Interpreter', 'Latex')
-xlabel('\bf{n:te sampel}', 'Interpreter', 'Latex');
-ylabel('$\mathbf{z[n]}$', 'Interpreter', 'Latex');
-print('fig1','-dpng');
+set(gca,'FontSize',20)
+xlabel('\bf{n:te sampel}', 'Interpreter', 'Latex', 'FontSize', 24);
+ylabel('$\mathbf{r[n]}$', 'Interpreter', 'Latex', 'FontSize', 24);
+print('fig1','-dpdf');
 
 
 lpeak = 7.644*10^6;
@@ -62,11 +62,11 @@ X_target3(1.3/2*N/2:1.7/2*N/2) = X(1.3/2*N/2:1.7/2*N/2);
 X_target = X_target3;
 x_target = ifft(X_target, 'symmetric');
 
-plot(x_target)
-title('\bf{figur 2: den s\"{o}kta signalen} $\mathbf{x_t[n]}$', 'Interpreter', 'Latex') 
-ylabel('$\mathbf{x_t[n]}$', 'Interpreter', 'Latex');
-xlabel('\bf{n:te sampel}', 'Interpreter', 'Latex');
-print('fig2','-dpng');
+plot(x_target) 
+set(gca,'FontSize',20)
+ylabel('$\mathbf{x_t[n]}$', 'Interpreter', 'Latex','FontSize',24);
+xlabel('\bf{n:te sampel}', 'Interpreter', 'Latex','FontSize',24);
+print('fig2','-dpdf');
 
 %fc i determined by looking at the
 %centrum of the heighest band of X
