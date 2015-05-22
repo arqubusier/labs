@@ -46,12 +46,15 @@ X = fft(x);
 %frequencies with multiples of
 %19 kHz
 plot(f, abs(X(1:end/2)))
-
-%Filtering out each band and inverse
-%transforming it shows that the
-%heighest band matches the signal
-%description (three distinctive parts,
-%the last one being white noise)
+set(gca,'FontSize',16)
+ylabel('$\mathbf{X[n]}$', 'Interpreter', 'Latex','FontSize',22);
+xlabel('\bf{n:te sampel}', 'Interpreter', 'Latex','FontSize',22);
+%%
+% Filtering out each band and inverse
+% transforming it shows that the
+% heighest band matches the signal
+% description (three distinctive parts,
+% the last one being white noise)
 ze = zeros(1, N);
 X_target1 = ze;
 X_target2 = ze;
