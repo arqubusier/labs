@@ -10,12 +10,12 @@ t = 0:1/Fs:(N-1)*1/Fs;
 % this section
 % 
 y_c = xcorr(y, y);
-x_c = linspace(-7.8e+06, 7.8e+06, 15599999);
-plot(x_c ,y_c);
+n_c = linspace(-7.8e+06, 7.8e+06, 15599999);
+plot(n_c ,y_c);
 
 axis([-10^6 10^6 -1500 2000])
 set(gca,'FontSize',20)
-xlabel('\bf{n:te sampel}', 'Interpreter', 'Latex', 'FontSize', 24);
+xlabel('\bf{n}', 'Interpreter', 'Latex', 'FontSize', 24);
 ylabel('$\mathbf{r[n]}$', 'Interpreter', 'Latex', 'FontSize', 24);
 print('fig1','-dpdf');
 
@@ -42,13 +42,14 @@ plot(x_c1)
 %%
 % Determine fc
 X = fft(x);
+F = linspace(0, 1/2, 3900000);
 %The plot shows three distinct bands at
 %frequencies with multiples of
 %19 kHz
-plot(f, abs(X(1:end/2)))
+plot(F, abs(X(1:end/2)))
 set(gca,'FontSize',16)
 ylabel('$\mathbf{X[n]}$', 'Interpreter', 'Latex','FontSize',22);
-xlabel('\bf{n:te sampel}', 'Interpreter', 'Latex','FontSize',22);
+xlabel('\bf{F}', 'Interpreter', 'Latex','FontSize',22);
 %%
 % Filtering out each band and inverse
 % transforming it shows that the
@@ -69,17 +70,17 @@ x_target = ifft(X_target, 'symmetric');
 
 subplot(3,1,1)
 plot(x_target1)
-set(gca,'FontSize',16,'xtick',[])
-ylabel('$\mathbf{z_1[n]}$', 'Interpreter', 'Latex','FontSize',22);
+set(gca,'FontSize',18,'xtick',[])
+ylabel('$\mathbf{x_1[n]}$', 'Interpreter', 'Latex','FontSize',22);
 subplot(3,1,2)
 plot(x_target2)
-set(gca,'FontSize',16,'xtick',[])
-ylabel('$\mathbf{z_2[n]}$', 'Interpreter', 'Latex','FontSize',22);
+set(gca,'FontSize',18,'xtick',[])
+ylabel('$\mathbf{x_2[n]}$', 'Interpreter', 'Latex','FontSize',22);
 subplot(3,1,3)
 plot(x_target) 
-set(gca,'FontSize',16)
-ylabel('$\mathbf{x_t[n]}$', 'Interpreter', 'Latex','FontSize',22);
-xlabel('\bf{n:te sampel}', 'Interpreter', 'Latex','FontSize',22);
+set(gca,'FontSize',18)
+ylabel('$\mathbf{x_3[n]}$', 'Interpreter', 'Latex','FontSize',22);
+xlabel('\bf{n}', 'Interpreter', 'Latex','FontSize',22);
 %print('fig2','-dpdf');
 
 %fc i determined by looking at the
