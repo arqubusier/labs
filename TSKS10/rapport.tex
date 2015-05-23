@@ -13,7 +13,6 @@
 \usepackage[utf8]{inputenc}
 \usepackage[swedish]{babel}
 \usepackage{xspace}
-\usepackage{pdfpages}
 \DeclareUnicodeCharacter{00A0}{ }
 \sloppy
 \raggedbottom
@@ -28,8 +27,6 @@
 
 \newcommand{\yhat}{$\hat{y}[n]$\xspace}
 
-\includepdf{tsks10-forsattsblad.pdf}
-
 \maketitle
 
 \section{Inledning}
@@ -38,31 +35,31 @@ Denna rapport beskriver en lösningsgång för en laborationsuppgift som gavs i
 kursen \emph{TSKS10} vårterminen 2015 på Tekniska högskolan vid Linköpings
 universitet.
 
-Uppgiften gick ut på att extrahera en specifik I/Q-modulerad signal från en signal som sändes
-över en kanal och som innehöll flera I/Q-modulerade signaler. Den sända signalen, $x(t)$, gas av:
+Uppgiften gick ut på att extrahera en specifik I/Q-modulerad signal, $x_t(t)$,
+från en sänd signal, $x(t)$, som gas av:
 \begin{equation}
 x(t) = x_i(t) \cos(2 \pi f_ct) - x_q(t) \sin(2 \pi f_c t) + z(t)
 \label{e1}
 \end{equation}
-där $z(t)$ betecknar summan av de ointressanta signalerna.
+där $x_i(t)$ och $x_q(t)$ utgör $x_t(t)$ och $z(t)$ betecknar
+summan av två ointressanta signaler.
 
-Den eftersökta signalen hade några kända egenskaper. Dels hade signalen en
-bärfrekvens $f_c$, som var en multipel av 19 kHz. Dels bestod $x_i$- respektive
-$x_q$-signalerna av tre olika delar som för vardera signal innehöll: en melodi, ett ordspråk
-och vitt brus. Melodierna och ordpråket skiljde sig åt i
+Signalen $x_t(t)$ hade följande kända egenskaper: dess bärfrekvens, $f_c$,
+var en multipel av 19 kHz; och dess komponenter, $x_i$ respektive $x_q$,
+var båda uppdelade i tre delar. De tre delarna innehöll: en melodi, ett
+ordspråk och vitt brus, där melodierna och ordpråken skiljde sig åt i
 innehåll och längd mellan $x_i$ och $x_q$.
 
-Signalen som mottogs från kanalen, $y$, såg på grund av ekoeffekter ut på
-följande vis:
+Den signal som faktiskt mottogs och kunde studeras, $y$, såg på grund av
+ekoeffekter ut på följande vis:
 \begin{equation}
     y(t)=x(t - \tau_1) + 0,9 x(t - \tau_2)
 \end{equation}
 där $\tau_1$ och $\tau_2$ är två tidskonstanter.
 
-För att kunna utföra beräkningar med hjälp av dator, användes en samplad
-variant av $y$. Den samplade signalen, \yhat, erhölls genom att först
-filtrera y med ett idealt lågpassfilter och sedan sampla resultatet med
-frekvensen 400 kHz. Den slutgiltliga signalen sparades sedan i wav format.
+För att kunna utföra beräkningar med hjälp av dator, filterades $y$ 
+med ett idealt lågpassfilter och samplades med frekvensen 400 kHz.
+Den samplade signalen, \yhat sparades sedan i wav-format.
 
 De uppgifter som skulle lösas var:
 \begin{enumerate}
@@ -79,91 +76,115 @@ och utförde ett antal beräkningar.
 \subsection{Filtrering av eko}
 
 Det första som gjordes var att bestämma $\tau_1$ - $\tau_2$, för att därmed
-kunna filtrera bort ekot från $\hat{y}[n]$. Detta gjordes genom att studera korrelationen
-av den mottagna signalen med sig själv:
+kunna filtrera bort ekot från $\hat{y}[n]$. Detta gjordes genom att studera
+mångtydighetsfunktionen av $y$:
 \begin{multline}
     r(\tau) = \int_{-\infty}^{\infty}\!y(t)y(t+\tau)\, \mathrm{d}t \\ 
-    = \int_{-\infty}^{\infty}\!(x(t-\tau_1)+0,9 x(t-\tau_2))(x(t-\tau_1+\tau)+0,9 x(t-\tau_2+\tau))\, \mathrm{d}t \\
-    \vdots \\
-    = 1,86\left\{x(t) \ast x(-t)\right\}(\tau) + 
+    = 1,86\left\{x(t) \ast x(-t)\right\}(\tau)\\ + 
     0,9\left\{x(-t) \ast x(t+\tau_1-\tau_2))\right\}(\tau)\\ + 
     0,9\left\{x(-t) \ast x(t+\tau_2-\tau_1))\right\}(\tau)
     \label{e3}
 \end{multline}
-Här utnyttjades att integralen hade $\pm\infty$ som integrationsgränser, vilket gjorde att integralens värde ej
-påverkades om integranden tidsförskjöts med $\tau_1$.
+Här utnyttjades att integralen hade $\pm\infty$ som integrationsgränser,
+vilket gjorde att integralens värde ej påverkades om integranden
+tidsförskjöts med $\tau_1$.
 
-Från (\ref{e3}) kan man dra slutsatsen att $r(\tau)$ innehåller tre kraftiga pikar: en stor pik mitt emellan två mindre
-pikar på avstånden $\pm(\tau_2 - \tau_1)$ från den större. Dessa pikar uppstår de båda komponeterna i respekive faltning
-överlappar som mest. Ett liknade resonemang kan göras för den diskreta \yhat.
+Från (\ref{e3}) kan man dra slutsatsen att $r(\tau)$ innehåller tre
+kraftiga pikar: en stor pik vid $\tau=0$, mitt emellan två mindre
+pikar på avstånden $\pm(\tau_2 - \tau_1)$ från den större. Dessa pikar uppstår
+då de båda komponeterna i respekive faltning överlappar som mest. Ett liknade
+resonemang kan göras för den diskreta \yhat.
 
 \begin{figure}
-    \includegraphics[trim = 0 50mm 0 80mm, clip, width=\linewidth]{fig1.pdf}
+    \includegraphics[trim = 0 80mm 0 90mm, clip, width=\linewidth]{fig1.pdf}
     \caption{
         Korrelationen $r[n]$ 
         \label{fig:z}
     }
 \end{figure}
 
-Korrelationen av \yhat  plottades, se figur \ref{fig:z}, och utifrån denna beräknades $\tau_2 - \tau_1$ genom att först beräkna $n_\Delta$, antalet sampel mellan
-den mittersta och den högra av ovannämnda pikar. Detta räknades sedan om till en tidsdifferens genom att multiplicera resultatet
-sampeltiden.
+mångtydighetsfunktionen av \yhat  plottades, se figur \ref{fig:z}, och
+utifrån denna beräknades $\tau_2 - \tau_1$ genom att först beräkna
+$n_\Delta$, antalet sampel mellan den mittersta och den högra av ovannämnda
+pikar. Detta räknades sedan om till en tidsdifferens genom att multiplicera
+resultatet sampeltiden.
 
-Tidsdifferensen användes sedan för att filtrera ut ekot. Detta gjordes i tidsdomänen genom att gå igenom varje sampelvärde
-från $n_\Delta$ till det sista, och för varje sampelvärde, $n_i$ sätta 
+Tidsdifferensen användes sedan för att filtrera ut ekot. Detta gjordes i
+tidsdomänen genom att gå igenom varje sampelvärde från $n_\Delta$ till det
+sista, och för varje sampelvärde, $n_i$ sätta 
 \begin{equation}
 x[n_i] \coloneqq x[n_i] - 0,9x[n_i - n_\Delta] 
 \label{e4}
 \end{equation}
 där $x[n] \coloneqq \hat{y}[n]$ från början.
 
-Operationen (\ref{e4}) fungerar, eftersom att (om man bortser från noll-värden i början av signalen som ej påverkar resultatet) ekot börjar $n_\Delta$
-sampel efter själva signalen; det finns alltså ett fönster av $n_\Delta$ sampel i början av signalen som saknar eko. Genom att
-värden från detta fönster subtraheras från värden $n_\Delta$ samples senare, kancelleras ekot. Eftersom att man tilldelar $x$ det ekofria
-värdet samtidigt som det används i uträkningen, flyttar man detta fönster framför sig tills man nått slutet av signalen.
+Operationen (\ref{e4}) fungerar, eftersom att ekot börjar (bortsett från
+noll-värden i början av signalen som ej påverkar resultatet) $n_\Delta$
+sampel efter själva signalen. Det finns alltså ett fönster av $n_\Delta$
+sampel i början av signalen som saknar eko. Genom att värden från detta fönster
+subtraheras från värden $n_\Delta$ sampel senare, kancelleras ekot. Eftersom
+att man tilldelar $x$ det ekofria värdet samtidigt som det används
+i uträkningen, flyttar man detta fönster framför sig tills man nått slutet av
+signalen.
 
 \subsection{Bestämning av $f_c$}
+%crop arguments: left bottom top right
+\begin{figure}[width=\textwidth]
 
-\begin{figure}[h]
-    \includegraphics[trim = 0 50mm 0 80mm, clip, width=\linewidth]{fig2.pdf}
+    \includegraphics[trim = 0 80mm 0 90mm, clip, width=\linewidth]{fig2.pdf}
     \caption{
-        den sökta signalen $x_t[n]$ 
+        Den diskreta fouriertransformen av $x[n]$ 
+        \label{fig:X}
+    }
+\end{figure}
+
+\begin{figure}[width=\textwidth]
+    \includegraphics[trim = 0 80mm 0 90mm, clip, width=\linewidth]{fig3.pdf}
+    \caption{
+        Samtliga frekvensband från $X[F]$ bandpassfiltrerade och inverstransformerade. 
         \label{fig:xt}
     }
 \end{figure}
 
-Genom att plotta $Y[F]$, den diskreta fouriertransformen av \yhat, kunde tre tydliga frekvensband med
-centra kring sampelnummer, som motsvarade multiplar av 19 kHz, observeras.
-Dessa undersöktes var för sig i tidsdomänen, för att hitta nyttosignalen $x_t[n]$ (dvs $x[n] - z[n]$).
-Undersökningen bestod i att bandpassfiltrera relevant band och inverstransformera. Ett av
-dessa band hade ett utseende i tidsdomänen, som stämde väl överens med det som gavs i uppgiften; den
-hade tre distinkta områden, där det sista området påminnde om vitt brus, se figur \ref{fig:xt}.
-Frekvensvärdet i centrum för frekvensbandet hos detta område noterades, och antogs vara $f_c$.
+Genom att plotta $X[F]$, den diskreta fouriertransformen av $x[n]$, kunde tre
+tydliga frekvensband med centra kring $F$, som motsvarade 38 kHz, 95 kHz, och
+152 kHz ($f = F f_s$) observeras, se figur \ref{fig:X}. Banden undersöktes var
+för sig i tidsdomänen. Först filtrerades banden med ett idealt lågpassfilter,
+med en bandbredd sådan att majoriteten av signalenergin för varje band rymdes.
+Sedan inverstransformerades resultaten vilket gav signalerna $x_1[n]$, $x_2[n]$
+och $x_3[n]$, se figur \ref{fig:xt}. Från samma figur blev det tydligt att
+$x_3$ var den eftersökta signalen, eftersom att den var den enda med tre
+distinkta områden där det sista området påminde om vitt brus. Frekvensen, 152
+kHz, som var i centrum för frekvensbandet hos detta område noterades, och
+antogs vara $f_c$. 
 
 \subsection{Identifiering av ordspråken}
 
-För att identifiera ordspråket genomfördes en I/Q-demodulering av $x[n]$, enligt:
+För att identifiera ordspråket genomfördes en I/Q-demodulering av $x[n]$,
+enligt:
 \begin{multline}
     x_i[n] = \mathcal{H}_{B/2}^{LP} \{ 2 x[n] \cos[2 \pi f_c n] \} \\
     x_q[n] = \mathcal{H}_{B/2}^{LP} \{ -2 x[n] \sin[2 \pi f_c n] \}
     \label{e5}
 \end{multline}
-där $B$ valdes till ett värde som var tillräckligt stort för att rymma en majoritet
-av signalenergin.
+där $B$ valdes till ett värde som var tillräckligt stort för att rymma en
+majoritet av signalenergin.
 
-Det uppstod dock ett problem i och med att $x[n]$ innehöll en tidsförskjutning $n_{\tau_1}$,
-vilket medförde att de komponenter man fick ut från (\ref{e5}) innehöll
-linjärkombinationer av $x_i[n]$ och $x_q[n]$. Detta kan inses genom att sätta $n := n - n_{\tau_1}$
-i (\ref{e5}) och använda subtraktionsatsen för sinus och cosinus.
+Det uppstod dock ett problem i och med att $x[n]$ innehöll en tidsförskjutning
+$n_{\tau_1}$, vilket medförde att de komponenter man fick ut från (\ref{e5})
+innehöll linjärkombinationer av $x_i[n]$ och $x_q[n]$. Detta kan inses genom
+att sätta $n := n - n_{\tau_1}$ i (\ref{e5}) och använda subtraktionsatsen för
+sinus och cosinus.
 
-Eftersom att det inte fanns något enkelt sätt att bestämma $n_{\tau_1}$, togs denna fram genom
-att experimentera med olika värden mellan $0$ och $2 \pi$. Efter att några värden provats
-kunde man dra slutsatsen att en av melodierna var kortare en den andra och följdes av några
-sekunders tystnad. Värdet på $n_{\tau_1}$ finjusterades därför tills överhörningen från den
-andra signalen var minimal under denna period av tystnad.
+Eftersom att det inte fanns något enkelt sätt att bestämma $n_{\tau_1}$, togs
+denna fram genom att experimentera med olika värden mellan $0$ och $2 \pi$.
+Efter att några värden provats kunde man dra slutsatsen att en av melodierna
+var kortare en den andra och följdes av några sekunders tystnad. Värdet på
+$n_{\tau_1}$ finjusterades därför tills överhörningen från den andra signalen
+var minimal under denna period av tystnad.
 
-Sist av allt nedsamplades $x_i$ respektive $x_q$ med en faktor 10 och spelades upp varpå
-ordspråken kunde höras.
+Sist av allt nedsamplades $x_i$ respektive $x_q$ med en faktor 10 och spelades
+upp varpå ordspråken kunde höras.
 \section{Resultat}
 
 Laborationen gav följande resultat:
