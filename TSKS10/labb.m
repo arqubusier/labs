@@ -47,9 +47,9 @@ F = linspace(0, 1/2, 3900000);
 %frequencies with multiples of
 %19 kHz
 plot(F, abs(X(1:end/2)))
-set(gca,'FontSize',16)
-ylabel('$\mathbf{X[n]}$', 'Interpreter', 'Latex','FontSize',22);
-xlabel('\bf{F}', 'Interpreter', 'Latex','FontSize',22);
+set(gca,'FontSize',18)
+ylabel('$\mathbf{X[F]}$', 'Interpreter', 'Latex','FontSize',22);
+xlabel('$\mathbf{F}$', 'Interpreter', 'Latex','FontSize',22);
 %%
 % Filtering out each band and inverse
 % transforming it shows that the
